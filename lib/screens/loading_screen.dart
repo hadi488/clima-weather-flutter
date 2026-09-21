@@ -12,6 +12,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
       desiredAccuracy: LocationAccuracy.low,
     );
     print(position);
+    print(position.altitude);
+    print(position.accuracy);
+    print(position.altitudeAccuracy);
+    print(position.speed);
+    print(position.speedAccuracy);
+    print(position.timestamp);
   }
 
   @override
