@@ -11,8 +11,6 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen>
     with SingleTickerProviderStateMixin {
-  double? longitude;
-  double? latitude;
   late AnimationController controller;
   @override
   void initState() {
@@ -24,6 +22,7 @@ class _LoadingScreenState extends State<LoadingScreen>
     getLocationData();
   }
 
+  @override
   void dispose() {
     controller.dispose();
     super.dispose();
@@ -32,27 +31,24 @@ class _LoadingScreenState extends State<LoadingScreen>
   void getLocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    latitude = location.latitude;
-    longitude = location.longitude;
-    print(latitude);
-    print(longitude);
-    await getWeatherData();
+    var weatherData = await getWeatherData(location);
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
-          return LocationScreen();
+          return LocationScreen(weatherData: weatherData);
         },
       ),
     );
   }
 
-  Future getWeatherData() async {
+  Future<dynamic> getWeatherData(Location location) async {
     NetworkInteractor networkInteractor = NetworkInteractor(
       url:
-          'https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m',
+          'https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m',
     );
     var returnedWeatherData = await networkInteractor.getData();
+    return returnedWeatherData;
   }
 
   @override
@@ -61,7 +57,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       body: Center(
         child: SpinKitThreeInOut(
           controller: controller,
-          size: 100.0,
+          size: 50.0,
           // delay: Duration(milliseconds: 600),
           itemBuilder: (BuildContext context, int index) {
             return DecoratedBox(
