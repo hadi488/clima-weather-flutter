@@ -1,6 +1,6 @@
 import 'package:clima_weather_flutter/screens/location_screen.dart';
 import 'package:clima_weather_flutter/services/location.dart';
-import 'package:clima_weather_flutter/services/networking.dart';
+import 'package:clima_weather_flutter/services/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -29,9 +29,14 @@ class _LoadingScreenState extends State<LoadingScreen>
   }
 
   void getLocationData() async {
+    WeatherModel weatherModel = WeatherModel();
     Location location = Location();
     await location.getCurrentLocation();
-    var weatherData = await getWeatherData(location);
+    var weatherData = await weatherModel.getWeatherData(location);
+    navigateToLocationScreen(weatherData);
+  }
+
+  void navigateToLocationScreen(dynamic weatherData) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -40,15 +45,6 @@ class _LoadingScreenState extends State<LoadingScreen>
         },
       ),
     );
-  }
-
-  Future<dynamic> getWeatherData(Location location) async {
-    NetworkInteractor networkInteractor = NetworkInteractor(
-      url:
-          'https://api.open-meteo.com/v1/forecast?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m',
-    );
-    var returnedWeatherData = await networkInteractor.getData();
-    return returnedWeatherData;
   }
 
   @override

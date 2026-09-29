@@ -1,3 +1,8 @@
+import 'package:clima_weather_flutter/utilities/constants.dart';
+
+import 'location.dart';
+import 'networking.dart';
+
 class WeatherModel {
   String getWeatherIcon(int condition) {
     if (condition < 300) {
@@ -29,5 +34,14 @@ class WeatherModel {
     } else {
       return 'Bring a 🧥 just in case';
     }
+  }
+
+  Future<dynamic> getWeatherData(Location location) async {
+    NetworkInteractor networkInteractor = NetworkInteractor(
+      url:
+          '$baseUrl?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m',
+    );
+    var returnedWeatherData = await networkInteractor.getData();
+    return returnedWeatherData;
   }
 }

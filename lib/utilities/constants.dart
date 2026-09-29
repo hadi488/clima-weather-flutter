@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 const apiKey = 'f4821c223b51a9f5ec3aebc37d80d973';
+const baseUrl = 'https://api.open-meteo.com/v1/forecast';
 const kTempTextStyle = TextStyle(fontFamily: 'Spartan MB', fontSize: 70.0);
 
 const kMessageTextStyle = TextStyle(fontFamily: 'Spartan MB', fontSize: 60.0);
