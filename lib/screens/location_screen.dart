@@ -38,7 +38,12 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void UpdateWeather() async {
     await location.getCurrentLocation();
-    var weatherData = await weatherModel.getWeatherData(location);
+    var weatherData = await weatherModel.getWeatherDataByCoordinates(location);
+    updateUI(weatherData);
+  }
+
+  void getWeatherBYcity(String city) async {
+    var weatherData = await weatherModel.getWeatherDataByCity(city);
     updateUI(weatherData);
   }
 
@@ -73,11 +78,14 @@ class _LocationScreenState extends State<LocationScreen> {
                     child: Icon(Icons.near_me, size: 50.0),
                   ),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      var city = await Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => CityScreen()),
                       );
+                      if (city != null) {
+                        getWeatherBYcity(city);
+                      }
                     },
                     child: Icon(Icons.location_city, size: 50.0),
                   ),

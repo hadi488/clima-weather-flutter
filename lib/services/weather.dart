@@ -36,10 +36,19 @@ class WeatherModel {
     }
   }
 
-  Future<dynamic> getWeatherData(Location location) async {
+  Future<dynamic> getWeatherDataByCoordinates(Location location) async {
     NetworkInteractor networkInteractor = NetworkInteractor(
       url:
           '$baseUrl?latitude=${location.latitude}&longitude=${location.longitude}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m',
+    );
+    var returnedWeatherData = await networkInteractor.getData();
+    return returnedWeatherData;
+  }
+
+  Future<dynamic> getWeatherDataByCity(String cityName) async {
+    NetworkInteractor networkInteractor = NetworkInteractor(
+      url:
+          '$baseUrl?city=${Uri.encodeComponent(cityName)}&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m',
     );
     var returnedWeatherData = await networkInteractor.getData();
     return returnedWeatherData;

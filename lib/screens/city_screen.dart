@@ -8,6 +8,7 @@ class CityScreen extends StatefulWidget {
 }
 
 class _CityScreenState extends State<CityScreen> {
+  late String cityName;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,13 +37,16 @@ class _CityScreenState extends State<CityScreen> {
                 child: TextField(
                   onChanged: (value) {
                     print('City name entered: $value');
+                    cityName = value;
                   },
                   style: TextStyle(color: Colors.black),
                   decoration: kTextFieldInputDecoration,
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context, cityName);
+                },
                 child: Text('Get Weather', style: kButtonTextStyle),
               ),
             ],
